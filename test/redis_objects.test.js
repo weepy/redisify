@@ -26,9 +26,11 @@ function User(id) {
   this.id = id
   this.namespace = "User:" + id + ":"
 }
+var commands = ["get", "set", "list", "lrange", "rpush", "llen"]
+
 User.namespace = "Users:"
-ro.mixin(User)
-ro.mixin(User.prototype)
+ro.mixin(User, {commands: commands})
+ro.mixin(User.prototype, {commands: commands})
 ro.client = client
 
 exports.test_set = function(done) {
