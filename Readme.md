@@ -28,7 +28,9 @@ It can be mixed into a prototype as well:
 function User(id) {
   this.namespace = "User:id"
 }
-  
+
+ro.mixin(User.prototype)
+
 var user = new User(42)
 
 user.get("xx", function(val) {
