@@ -1,0 +1,10 @@
+{
+    "name": "redis_objects"
+  , "version": "0.0.1"
+  , "description": "Mixin redis to your objects"
+  , "keywords": []
+  , "author": "weepy <jonahfox@gmail.com>"
+  , "dependencies": {}
+  , "main": "index"
+  , "engines": { "node": "0.4.x" }
+}
