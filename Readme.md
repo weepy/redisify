@@ -18,7 +18,7 @@ User.namespace = "Users:"
 ro.mixin(User)
 
 User.get("xx", function(val) {
-  // get Users:xx 
+  // redis "get Users:xx"
 })
 </pre>
 
@@ -26,7 +26,7 @@ It can be mixed into a prototype as well:
 
 <pre>
 function User(id) {
-  this.namespace = "User:id"
+  this.namespace = "User:" + id + ":"
 }
 
 ro.mixin(User.prototype)
@@ -34,18 +34,36 @@ ro.mixin(User.prototype)
 var user = new User(42)
 
 user.get("xx", function(val) {
-  // get User:42:xx 
+  // redis "get User:42:xx" 
 })
 
 </pre>
 
-## Example2
+## Example 2
 
 Showing transformations: trailing function calls are called as an asynchronous stack of maps. Eg. if User.load_bulk might instantiate a list of User objects from a list of ids
 
 <pre>
 User.smembers("all", User.load_bulk, function(users) {
   // user is now a list of instantiated objects
+})
+</pre>
+
+## Example 3
+
+Showing mounting to a different part of the object and a different property
+
+<pre>
+var User = {
+  key: "Users:"
+} 
+ro.mixin(User, { 
+  namespace_property: "key",
+  mount: "db"
+})
+
+User.db.get("mystring", function(val) {
+  // redis "get Users:mystring"
 })
 </pre>
 
