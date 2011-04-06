@@ -12,9 +12,9 @@
 <pre>
 var ro = require("redis_objects")
 
-function User(id) {}
-
-User.namespace = "Users"
+var User = {
+  namespace: "Users"
+}
 ro.mixin(User)
 
 User.get("xx", function(val) {
