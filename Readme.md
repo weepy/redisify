@@ -46,10 +46,11 @@ User.smembers("all", User.load_bulk, function(users) {
   // user is now a list of instantiated objects
 })
 </pre>
+
 ## API
 
 <pre>
-require("redis_objects").mixin(Object, {
+require("redis_objects").mixin(_object_, {
   mount: "db",                 // where to mount the redis commands (defaults to null => on the object itself)
   namespace_property: "key",   // name of property that contains the namespace (defaults to 'namespace')
   commands: ["get", "set"],    // redis properties to mixin (defaults to all)
