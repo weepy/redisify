@@ -24,11 +24,11 @@ exports.zero_tasks = function(done) {
 
 function User(id) {
   this.id = id
-  this.namespace = "User:" + id + ":"
+  this.namespace = "User:" + id
 }
 var commands = ["get", "set", "list", "lrange", "rpush", "llen"]
 
-User.namespace = "Users:"
+User.namespace = "Users"
 ro.mixin(User, {commands: commands})
 ro.mixin(User.prototype, {commands: commands})
 ro.client = client
@@ -102,11 +102,11 @@ exports.test_lrange = function(done) {
 
 function User2(id) {
   this.id = id
-  this.key = "User:" + id + ":"
+  this.key = "User:" + id
 }
-User2.key = "Users:"
-ro.mixin(User2, {mount: "db", namespace_property: "key"})
-ro.mixin(User2.prototype, {mount: "db", namespace_property: "key"})
+User2.key = "Users"
+ro.mixin(User2, {at: "db", namespace_property: "key"})
+ro.mixin(User2.prototype, {at: "db", namespace_property: "key"})
 
 exports.test_set2 = function(done) {
   User2.db.set("xxx", 123, function(data) {

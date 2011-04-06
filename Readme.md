@@ -41,7 +41,8 @@ user.get("xx", function(val) {
 
 ## Example 2
 
-Showing transformations: trailing function calls are called as an asynchronous stack of maps. Eg. if User.load_bulk might instantiate a list of User objects from a list of ids
+Showing transformations: trailing function calls are called as an asynchronous stack of maps. 
+Eg. if User.load_bulk might instantiate a list of User objects from a list of ids: 
 
 <pre>
 User.smembers("all", User.load_bulk, function(users) {
@@ -71,9 +72,9 @@ User.db.get("mystring", function(val) {
 
 <pre>
 require("redis_objects").mixin(_object_, {
-  mount: "db",                 // where to mount the redis commands (defaults to null => on the object itself)
+  at: "db",                    // where to mount the redis commands (defaults to null => on the object itself)
   namespace_property: "key",   // name of property that contains the namespace (defaults to 'namespace')
-  commands: ["get", "set"],    // redis properties to mixin (defaults to string commands)
+  commands: ["get", "set"],    // array of redis properties to mixin (defaults to string commands)
   client: obj                  // redis client
 })
 </pre>
