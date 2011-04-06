@@ -14,7 +14,7 @@ var ro = require("redis_objects")
 
 function User(id) {}
 
-User.namespace = "Users:"
+User.namespace = "Users"
 ro.mixin(User)
 
 User.get("xx", function(val) {
@@ -26,7 +26,7 @@ It can be mixed into a prototype as well:
 
 <pre>
 function User(id) {
-  this.namespace = "User:" + id + ":"
+  this.namespace = "User:" + id
 }
 
 ro.mixin(User.prototype)
@@ -46,7 +46,7 @@ Eg. if User.load_bulk might instantiate a list of User objects from a list of id
 
 <pre>
 User.smembers("all", User.load_bulk, function(users) {
-  // user is now a list of instantiated objects
+  // users is now a list of instantiated objects
 })
 </pre>
 
@@ -56,11 +56,11 @@ Showing mounting to a different part of the object and a different property
 
 <pre>
 var User = {
-  key: "Users:"
+  key: "Users"
 } 
 ro.mixin(User, { 
   namespace_property: "key",
-  mount: "db"
+  at: "db"
 })
 
 User.db.get("mystring", function(val) {
