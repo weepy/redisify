@@ -8,15 +8,15 @@
 ## Usage
 
 <pre>
-my_object.redis = redisify(client, key_fn)
+my_object.redis = redisify([client], [key_fn])
 </pre>
 
 
-* client: redis client - if this is null, it will try to use a client from my_object.redis.client
+* client: redis client.
 * key_fn: property or function that contains the object's redis namespace key (defaults to 'key')
 * 'redis' can be anything 
 
-Debugging can be turn on via the 'log' property of the proxy
+Debugging can be turn on via the 'log' property of the proxy:
 <pre>
 my_object.redis.log = console.log 
 </pre>
@@ -44,9 +44,8 @@ function User(id) {
   this.key = "User:" + id
 }
 
-User.prototype.redis = redisify(client)
-
-
+User.prototype.redis = redisify()
+User.prototype.redis.client = client // alternate way of specifying client
 
 var user = new User(42)
 
@@ -78,10 +77,8 @@ var User = {
   namespace: "Users"
 }
 
-
 User.db = redisify(client, "namespace")
 User.db.log = console.log // log out redisify proxy calls to node_redis
-
 
 User.db("get", "mystring", function(val) {
   // redis "get Users:mystring"
