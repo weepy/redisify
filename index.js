@@ -1,2 +1,2 @@
 
-module.exports = require('./lib/redis_objects');
+module.exports = require('./lib/redisify');

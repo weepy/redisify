@@ -1,5 +1,5 @@
 {
-    "name": "redis_objects"
+    "name": "redisify"
   , "version": "0.0.1"
   , "description": "Mixin redis to your objects"
   , "keywords": []

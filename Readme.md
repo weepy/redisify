@@ -7,18 +7,32 @@
 
 
 
-## Example
+## Usage
 
 <pre>
-var ro = require("redis_objects")
+_object_ = redisify.mixin(client, namespace)
+</pre>
+
+* at: where to mount the redis commands (defaults to null => on the object itself)
+* namespace_fn: name of property that contains the namespace (defaults to 'namespace')
+* commands: array of redis properties to mixin (defaults to all commands)
+* client: redis client
+
+
+## Examples
+
+<pre>
+var redisify = require("redisify")
+var client = require("redis").createClient()
 
 var User = {
-  namespace: "Users"
+  key: "Users"
 }
-ro.mixin(User)
+User.redis = redisify(client)
 
-User.get("xx", function(val) {
+User.redis("get", "xx", function(val) {
   // redis "get Users:xx"
+  // User == this
 })
 </pre>
 
@@ -26,15 +40,16 @@ It can be mixed into a prototype as well:
 
 <pre>
 function User(id) {
-  this.namespace = "User:" + id
+  this.key = "User:" + id
 }
 
-ro.mixin(User.prototype)
+User.prototype.redis = redisify(client)
 
 var user = new User(42)
 
-user.get("xx", function(val) {
+user.redis("get", "xx", function(val) {
   // redis "get User:42:xx" 
+  // user == this
 })
 
 </pre>
@@ -42,10 +57,11 @@ user.get("xx", function(val) {
 ## Example 2
 
 Showing transformations: trailing function calls are called as an asynchronous stack of maps. 
+
 Eg. if User.load_bulk might instantiate a list of User objects from a list of ids: 
 
 <pre>
-User.smembers("all", User.load_bulk, function(users) {
+User.redis("smembers", "all", User.load_bulk, function(users) {
   // users is now a list of instantiated objects
 })
 </pre>
@@ -56,33 +72,24 @@ Showing mounting to a different part of the object and a different property
 
 <pre>
 var User = {
-  key: "Users"
-} 
-ro.mixin(User, { 
-  namespace_property: "key",
-  at: "db"
-})
+  namespace: "Users"
+}
 
-User.db.get("mystring", function(val) {
+User
+User.db = redisify(client, "namespace")
+
+User.db("get", "mystring", function(val) {
   // redis "get Users:mystring"
+  // User == this
 })
 </pre>
 
-## API
 
-<pre>
-require("redis_objects").mixin(_object_, {
-  at: "db",                    // where to mount the redis commands (defaults to null => on the object itself)
-  namespace_property: "key",   // name of property that contains the namespace (defaults to 'namespace')
-  commands: ["get", "set"],    // array of redis properties to mixin (defaults to string commands)
-  client: obj                  // redis client
-})
-</pre>
 
 ## Install
 
 <pre>
-npm install redis_objects
+npm install redisify
 </pre>
 
 ## run tests
