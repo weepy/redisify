@@ -1,24 +1,25 @@
-# Redis Objects
+# Redisify
 
-
-* Mixin redis commands to an object
-* Use the objects namespace property to namespace redis calls
-* Also provides an async stack for manipulating redis return value (obvious usecase - bulk load objects from redis ids)
-
+* adds object orientated redis calls to an object (or prototype)
+* acts as a proxy to node_redis client, but with a namespace key pulled from the object
+* Also trailing function calls act as transformations. E.g. obvious usecase - bulk load objects from redis ids
 
 
 ## Usage
 
 <pre>
-_object_ = redisify.mixin(client, namespace)
+my_object.redis = redisify(client, key_fn)
 </pre>
 
-* at: where to mount the redis commands (defaults to null => on the object itself)
-* namespace_fn: name of property that contains the namespace (defaults to 'namespace')
-* commands: array of redis properties to mixin (defaults to all commands)
-* client: redis client
 
+* client: redis client - if this is null, it will try to use a client from my_object.redis.client
+* key_fn: property or function that contains the object's redis namespace key (defaults to 'key')
+* 'redis' can be anything 
 
+Debugging can be turn on via the 'log' property of the proxy
+<pre>
+my_object.redis.log = console.log 
+</pre>
 ## Examples
 
 <pre>
@@ -43,7 +44,11 @@ function User(id) {
   this.key = "User:" + id
 }
 
-User.prototype.redis = redisify(client)
+User.prototype.redis = redisify()
+User.prototype.redis.client = client  // setting client via another method
+
+User.prototype.redis.log = console.log // log out redisify proxy calls to node_redis
+
 
 var user = new User(42)
 
