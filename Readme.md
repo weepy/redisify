@@ -44,10 +44,8 @@ function User(id) {
   this.key = "User:" + id
 }
 
-User.prototype.redis = redisify()
-User.prototype.redis.client = client  // setting client via another method
+User.prototype.redis = redisify(client)
 
-User.prototype.redis.log = console.log // log out redisify proxy calls to node_redis
 
 
 var user = new User(42)
@@ -80,8 +78,10 @@ var User = {
   namespace: "Users"
 }
 
-User
+
 User.db = redisify(client, "namespace")
+User.db.log = console.log // log out redisify proxy calls to node_redis
+
 
 User.db("get", "mystring", function(val) {
   // redis "get Users:mystring"
